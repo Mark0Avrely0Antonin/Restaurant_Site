@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Авторизация пользователя {% endblock %}
+
+{% block content %}
+<br>
+<br>
+
+<div id='form_con' class="container text">
+  <div class="row">
+    <div class="col col-lg-12">
+       <br>
+       <br>
+      {% if messages %}
+          {% for message in messages %}
+              {% if message.tags == 'error' %}
+              <div class="alert alert-danger" role="alert">
+                  {{ message }}
+              </div>
+              {% else  %}
+              <div class="alert alert-success" role="alert">
+                  {{ message }}
+              </div>
+              {% endif %}
+          {% endfor %}
+      {% endif %}
+      <h4 class="text fw-bold text-center">Авторизация пользователя</h4>
+      <form class='register_form' enctype='' action="{% url 'login' %}"  method='POST'>
+        <br>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type='submit' class='btn btn-outline-success'>Авторизоваться</button>
+        <br>
+        <br>
+      </form>
+<br>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

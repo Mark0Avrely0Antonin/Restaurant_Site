@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %} Профиль {{ profile_item.account.username }} {% endblock %}
+
+{% block content %}
+
+<div class="container dish_con mt-5">
+    <div class="row mt-5">
+        <div class="col col-lg-12 profile_view">
+            <br>
+            <br>
+            {% if profile_item.account_image %}
+            <img class="account_image" src="{{ user.profile.account_image.url }}" alt="">
+            {% else %}
+            <img class="account_image" src="https://i.pinimg.com/550x/34/6e/1d/346e1df0044fd77dfb6f65cc086b2d5e.jpg" alt="">
+            {% endif %}
+            <h4 class="text"><span class="fw-bold">Имя пользователя:</span> {{ profile_item.account.username }}</h4>
+            <h4 class="text"><span class="fw-bold">Профильное имя:</span> {{ profile_item.profile_username }}</h4>
+            <br>
+            <br>
+            <h5 class="text"><span class="fw-bold italic"> Зарегистрирован:</span> <span style="color: green">{{ profile_item.account.time_create }}</span></h5>
+            <h5 class="text"><span class="fw-bold"> Обновился:</span> <span style="color: orange;">{{ profile_item.account.time_update }}</span></h5>
+            {% if profile_item.country %}
+            <h5 class="text"><span class="fw-bold">Страна пользователя: </span>{{ profile_item.country }}</h5>
+            {% else %}
+            <h5 class="text"><span class="fw-bold">Страна пользователя: </span><span style="color: red;">Нету страны пользователя</span></h5>
+            {% endif %}
+            <br>
+            <br>
+            {% if profile_item.bio %}
+            <h5 class="text"><span class="fw-bold">Биография пользователя:</span> <br>{{ profile_item.bio }}</h5>
+            {% else %}
+            <h5 class="text"><span class="fw-bold">Биография пользователя:</span><br> <span style="color: red;">Нету биографий</span></h5>
+            {% endif %}
+
+            <a href="{% url 'main' %}">
+                <button class="btn btn-danger">Назад</button>
+            </a>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+</div>
+
+
+{% endblock %}

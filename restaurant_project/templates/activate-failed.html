@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+Страница
+
+{% endblock %}
+
+{% block content %}
+
+<br>
+<br>
+<div class="container dish_con text-center">
+    <div class="row">
+        <div class="col col-lg-12">
+            <br>
+            <br>
+            <h3 style="color: green;">Авторизация успешно завершена!</h3>
+            <button class="btn btn-outline-success"><a href="{% url 'main' %}">Главная</a></button>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+</div>
+
+
+{% endblock %}

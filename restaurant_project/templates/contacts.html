@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Контакты
+{% endblock %}
+
+{% block content %}
+
+<br>
+<br>
+<div class="container dish_con">
+    <h3 class="fw-bold text text-center">Контакты</h3>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col col-lg-6">
+            <div id="map" style="width: 700px; height: 600px;"></div>
+        </div>
+    </div>
+    <p class="fw-bold"><span class="text">пр. Ленина д1</span><br>г.Москва</p>
+    <p class="fw-bold"><span class="text">пр. Ленина д2</span><br>г.Новосибирск</p>
+    <p class="fw-bold"><span class="text">пр. Ленина д3</span><br>г.Краснодар</p>
+    <div class="row">
+        <div class="col col-lg-9 col-md-9 col-sm-9">
+            <form action="{% url 'comment_add' %}" method='post' class='mt-4'>
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class='text fw-bold' for="contactcomment">
+                        Ваш комментарий:
+                    </label>
+                    <textarea name="comment" cols="30" id="contactcomment" rows="8" required=''
+                              class="form-control border"></textarea>
+                </div>
+                <br>
+                <button class="btn btn-outline-warning" type='submit'>
+                    Отправить
+                </button>
+            </form>
+            <br>
+            <br>
+        </div>
+        <div class="col col-lg-12 col-md-12 col-sm-12">
+            {% for item in comments %}
+            <div class="" style='background-color: rgba(6, 5, 5, 0.957); border-radius: 25px;'>
+                <br>
+                <a href="{{ item.user.profile.get_absolute_url }}"> <img src="{{ item.user.profile.account_image.url }}"
+                                                                         width="150" height="150" class="avatar_image"
+                                                                         alt=""></a>
+                <br>
+                <a href="{{ item.user.profile.get_absolute_url }}"><h4 style='margin-left: 5px;' class="fw-bold text">{{ item.user.username }}</h4></a>
+                <hr style="background-color: #fff;">
+                <h5 style='margin-left: 5px;' class="fw-bold text">{{ item.comment }}</h5>
+                <br>
+                <br>
+                <hr style="background-color: #fff;">
+                <p style='margin-left: 5px;' class="fw-bold text">{{ item.time_created }}</p>
+                <p style='margin-left: 5px;' class="fw-bold text">{{ item.user.email }}</p>
+                <br>
+                <br>
+            </div>
+            <br>
+            <br>
+            {% endfor %}
+        </div>
+        <br>
+        <br>
+    </div>
+    <div class="col col-lg-12">
+        <!--      {% for item in review %}-->
+        <!--      <div class="" style='background-color: rgba(6, 5, 5, 0.957); border-radius: 25px;'>-->
+        <!--        <br>-->
+        <!--        <h4 style='margin-left: 5px;' class="fw-bold text">{{ item.name }}</h4>-->
+        <!--        <p style='margin-left: 5px;' class="fw-bold text">{{ item.created_at }}</p>-->
+        <!--        <hr>-->
+        <!--        <p style='margin-left: 5px;' class="fw-bold text">{{ item.text }}</p>-->
+        <!--        <p style='margin-left: 5px;' class="fw-bold text">{{ item.email }}</p>-->
+        <!--        <br>-->
+        <!--        <br>-->
+        <!--      </div>-->
+        <!--      <br>-->
+        <!--      <br>-->
+        <!--      {% endfor %}-->
+    </div>
+</div>
+</div>
+
+
+{% endblock %}
