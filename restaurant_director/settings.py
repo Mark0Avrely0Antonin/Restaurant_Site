@@ -101,11 +101,11 @@ WSGI_APPLICATION = 'restaurant_director.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'restaurant_site',
-        'USER': 'postgres',
-        'PASSWORD': 'kozarakovca0973',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
     }
 }
 
@@ -159,9 +159,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 EMAIL_FROM_USER = 'kozarakovca2@gmail.com'
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'kozarakovca2@gmail.com'
-EMAIL_HOST_PASSWORD = 'KOZARAKOVCA0973'
+EMAIL_HOST = ''
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_PORT = 587
