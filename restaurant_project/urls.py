@@ -37,6 +37,8 @@ urlpatterns = [
 
   path('activate_user/<uidb64>/<token>', activate_user, name='activate'),
 
+  path("menu_filter/", menu_filter, name='menu_filter'),
+
 
 ]
 

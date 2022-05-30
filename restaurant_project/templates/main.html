@@ -25,7 +25,9 @@
 <h4 class="fw-bold text">{{ user.username }}</h4>
 <br>
 <h4 class="fw-bold text"><a class="text" href="{{ user.profile.get_absolute_url }}">Личный кабинет</a><br><a
-        class="text" href="{% url 'edit_profile' user.profile.profile_username %}">Изменение профиля</a></h4>
+        class="text" href="{% url 'edit_profile' user.profile.profile_username %}">Изменение профиля</a><br><a
+        href="{% url 'change_password' %}"
+        class="text">Изменение пароля</a></h4></h4>
 {% endif %}
 
 {% else %}
@@ -34,6 +36,19 @@
 <h5 class="fw-bold" style="color: red;">Чтобы иметь, личный кабинет, вам нужно <a href="{% url 'register' %}">зарегистрироваться</a>
     или
     <a href="{% url 'login' %}">авторизоваться</a></h5>
+{% endif %}
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == 'error' %}
+<div class="alert alert-danger" role="alert">
+    {{ message }}
+</div>
+{% else  %}
+<div class="alert alert-success" role="alert">
+    {{ message }}
+</div>
+{% endif %}
+{% endfor %}
 {% endif %}
 <h1 class="text-center fw-bold text">Ресторан Элегия</h1>
 <h1 id='fuc' class='text-center text'>Свежая И Вкусная Еда Для Вашего Здоровья!</h1>

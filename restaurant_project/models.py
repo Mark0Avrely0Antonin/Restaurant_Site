@@ -10,7 +10,7 @@ from django.contrib.auth.models import PermissionsMixin
 
 class Manager_Account(BaseUserManager):
 
-    def create_user(self, email, username, password, **other_fields):
+    def create_user(self, email, username, password = None, **other_fields):
 
         if not email:
             raise ValueError('You must provide an email address')
@@ -25,6 +25,7 @@ class Manager_Account(BaseUserManager):
 
         other_fields.setdefault('is_staff', True)
         other_fields.setdefault('is_superuser', True)
+        other_fields.setdefault('is_email_verified', True)
 
         if other_fields.get('is_staff') is not True:
             raise ValueError('Superuser must be assigned to is_staff=True.')
@@ -32,7 +33,12 @@ class Manager_Account(BaseUserManager):
         if other_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must be assigned to is_superuser=True.')
 
-        return self.create_user(email, username, password, **other_fields)
+        email = self.normalize_email(email)
+        user = self.model(email = email, username = username, **other_fields)
+        user.set_password(password)
+        user.profile_username = username
+        user.save()
+        return user
 
 
 class User_Account(AbstractBaseUser, PermissionsMixin):
@@ -99,8 +105,8 @@ class Category(models.Model):
 
 
     class Meta:
-        verbose_name = 'Категория блюдо'
-        verbose_name_plural = 'Категорий блюдо'
+        verbose_name = 'Категория блюда'
+        verbose_name_plural = 'Категорий блюда'
 
 
 class Menu(models.Model):
@@ -113,8 +119,6 @@ class Menu(models.Model):
 
     dish_likes = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name = 'Лайки блюдо',
                                         related_name = 'dish_likes')
-
-    is_email_verified = models.BooleanField(default = False)
 
     def __str__(self):
         return self.name
@@ -163,8 +167,8 @@ class Reviews(models.Model):
 
 
     class Meta:
-        verbose_name = 'Комментарий о блюдо'
-        verbose_name_plural = 'Комментарий о блюдов'
+        verbose_name = 'Комментарий о блюда'
+        verbose_name_plural = 'Комментарий о блюда'
 
 
 class ContactReview(models.Model):
@@ -180,5 +184,4 @@ class ContactReview(models.Model):
 
 
     class Meta:
-        verbose_name = 'Комменатрий контактов'
-        verbose_name_plural = 'Комментарий контакту'
+        verbose_name = 'Комментарий контакту'

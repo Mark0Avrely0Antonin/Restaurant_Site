@@ -11,15 +11,15 @@
 <div id='form_con' class="container text">
     <div class="row">
         <div class="col col-lg-12">
-        <br>
-        <br>
-              {% if messages %}
-                  {% for message in messages %}
-                      <div class="alert alert-success" role="alert">
-                          {{ message }}
-                      </div>
-                  {% endfor %}
-              {% endif %}
+            <br>
+            <br>
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
             <h4 class="text fw-bold text-center">Регистрация пользователя {{ request.user.username }}</h4>
             <form class='register_form' enctype='' action="" method='POST'>
                 <br>
@@ -27,75 +27,15 @@
                 <hr style='background-color: Teal; height: 4px;'>
                 {% csrf_token %}
                 {{ form.as_p }}
-                <!--        {{ form.non_field.errors }}-->
-                <!--        <div class="form-group">-->
-                <!--          <div class="col col-sm-12 col-lg-12 col-md-12 new_form">-->
-                <!--          <label style='margin-left: 15px; color: #fff;' for="{{ form.username.id_for_label }}" class="editContent text-center">Имя: </label>-->
-                <!--          <div class="">-->
-                <!--            {{ form.username }}-->
-                <!--          </div>-->
-                <!--          <div class="invalid-feedback">-->
-                <!--            {{ form.username.errors }}-->
-                <!--          </div>-->
-                <!--        </div>-->
-                <!--        </div>-->
-                <!--          <br>-->
-                <!--          <div class="form-group">-->
-                <!--            <div class="col col-sm-12 col-lg-12 col-md-12 form-group p-0 editContent email new_form" style=''>-->
-                <!--              <label style='margin-left: 15px; color: #fff;' for="{{ form.email.id_for_label }}" class="editContent">-->
-                <!--                Почта: -->
-                <!--              </label>-->
-                <!--              {{ form.email }}-->
-                <!--              <div class="invalid-feedback">-->
-                <!--                {{ form.email.errors}}-->
-                <!--              </div>-->
-                <!--            </div>-->
-                <!--          </div>-->
-                <!--          <br>-->
-                <!--         <div class="form-group">-->
-                <!--            <div class="col col-sm-12 col-lg-12 col-md-12 form-group p-0 editContent password2 new_form" style=''>-->
-                <!--              <label for="{{ form.password1.id_for_label }}" style='margin-left: 15px; color: #fff;' class="editContent">-->
-                <!--                 Пароль: -->
-                <!--              </label>-->
-                <!--              {{ form.password1 }}-->
-                <!--              <div class="invalid-feedback">-->
-                <!--                {{ form.password1.errors}}-->
-                <!--              </div>-->
-                <!--              <br>-->
-                <!--            </div>-->
-                <!--            <br>-->
-                <!--          </div>-->
-                <!--          <div class="form-group">-->
-                <!--            <div class="col col-sm-12 col-lg-12 col-md-12 form-group p-0 editContent password2 new_form" style=''>-->
-                <!--              <label for="{{ form.password2.id_for_label }}" style='margin-left: 15px; color: #fff;' class="editContent">-->
-                <!--                Подтверждение пароля: -->
-                <!--              </label>-->
-                <!--              {{ form.password2 }}-->
-                <!--              <div class="invalid-feedback">-->
-                <!--                {{ form.password2.errors}}-->
-                <!--              </div>-->
-                <!--              <br>-->
-                <!--            </div>-->
-                <!--            <br>-->
-                <!--          </div>-->
-                <!--          <div class="form-group">-->
-                <!--            <div class="col col-sm-12 col-lg-12 col-md-12 form-group p-0 editContent password2 new_form" style=''>-->
-                <!--              <label style='margin-left: 15px; color: #fff;' class="editContent">-->
-                <!--                Профильное имя: -->
-                <!--              </label>-->
-                <!--              {{ form.profile_username }}-->
-                <!--              <div class="invalid-feedback">-->
-                <!--                {{ form.profile_username.errors}}-->
-                <!--              </div>-->
-                <!--              <br>-->
-                <!--            </div>-->
-                <!--            <br>-->
-                <!--          </div>-->
                 <button type='submit' class='btn btn-outline-danger'>Зарегистрироваться</button>
                 <br>
                 <br>
+                <a class="" href='{% url "social:begin" "github" %}'><img
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABmJLR0QA/wD/AP+gvaeTAAAKQElEQVR4nO2ba0xUZwKG31FGHEUuUQsVVBBR8YLGu9Laxh/8sOl6XbXdjYXd0IK2blKTbld3Id26P9q0Nba6rkajhu1WrenFW+yP0oZitYqo0ZTqetetKV4YQNABZp79MXPIwMycYXAGNlnf5CQn893e953v/n1Heoz/b1gimTlgkzRZ0gxJoyWlSxoiqZ/n6SnJLqlB0nVJVyWdkVQh6ajFYnkQSX4RARAP5AEHgId0Hg+AQ8ASoHek+IatBgBjJL0m6beS+kqS0+nU2bNn9f3336uyslKXLl3S5cuXVV9fr7q6OrlcLsXHx6tPnz4aNmyY0tPTNWHCBM2YMUMTJ05UVFSUkX2NpH9J2mixWKrCxTksANKAEsAJ4HK5KC0t5eWXX+aJJ55AUqeehIQEli1bxoEDB3A6nUataAb+ASR2h9Y2AKzAGk9VxeFwsGnTJjIzMzstOtCTlpbGe++9R0NDAx6T6z1lW7tWtQfACOCU8bd8/PHHpKWl+SUfHx/PvHnzeOeddzh06BDnz5/n3r17OJ1OnE4n9+7do6qqisOHDzN27FhTI5588kk2bdrkXSOOAIO7Wvw8oBbgypUr5OTk+BDt1asXS5cu5auvvqKpqanDvd6KFSuQRI8ePVi1ahVLlizBarX65D99+nTOnTtn1Ia7wJyuEv+q0dY///xz4uLi2hCLjo5m5cqV/Pzzz62iXC4XZ86c4f3332f+/PmMHTuWhIQErFYr0dHR9O/fnzFjxjBr1ix69uyJJDIzM1vT37hxgxdeeMHHBJvNxrZt21qLAV6NtPi/GKUVFxdjsVh8SH322WetxM+cOUNhYSFJSUmdavd5eXmt//KJEycCxisoKKClpcUwYUWkxL8G0NLSwiuvvBKQTFFREd999x3PP/98WDo/i8XC008/zdChQ03jLViwAIfD4fKYUBhu8QuMal9QUBD2Hj5cz/z5871rwsJwiR9hdHhFRUU+hQ4cOJCCggJyc3N55pln6N27d8QEWq1WsrOzeemllygsLCQlJcUnTn5+vtEC64HRjyreCpwG+OKLL/y2+T179rTpxe12O5s3b2bkyJFhE56amsr69eu5e/dum7JKS0v9xt+8ebMRpRLoFUxnwKkwsFrS365fv66srCzV1ta2Ce/bt69u374tm83mk9bpdKqkpERvvvmmfvnlF0lSTEyMxo0bp4EDByo+Pl5xcXGyWCyqra2V3W7XnTt3dO7cudZyEhIStHbtWuXn58tq9Z3vOJ1OJScnt+ZvIDo6WsePH1dWVpYk/dVisRQHM8Gf+DSgEWDOnDl+nZ49e7a/obwNampq2Lt3Lz/99JP35CUgXC4XFy9eZO/evVRXVweNv2jRIr/cJk+ebPQHD4C0zhiwE+DTTz8NWDULCgqCEow0Vq9eHZDfhx9+aETbZaa1hx/xmZJ+09LSojVr1gRMGBcXF7Kx4UZ8fHzAsLVr16qhoQFJv/Zo8gsfAyStlNSzpKREFy5cCFhAc3NzCFQjg6ampoBh1dXV+uijjyxya1zVoQyBWKAOYMKECaa988KFC7un3nshPz/flGNKSgrNzc0A94HgVRbIBTh69GjQ4SkjI6M7tQMwY8aMoDy9pue/96e5fROYL0m7d+8OalZhYXhnnJ1BRzh4aVlgGhHojWfoS01NNXX1qaee6tCw1hUItu6IjY3l4cOH4B4SA+8tAjMBLl68GLRaHT58uDs1t8Hx48eD8i0rKzOiz2qv27sJTJWkY8eOmdaUjIwM5eTkmMbpSkyZMkXTpk0zjXP06FHjdXr7MG8DsiTp5MmTppnl5OTIYonocULICPaHVFRUGK9j2od5G5AqSZcuXTLNbObMmSGR6woE43T58mXjdUT7MB8Drly5YppZYmL370i3R1JSkmn41atXjVcf8t4GxElSTU2NaWb9+vULiVxXwGxKLEl2u9147d8+zNsAmyQ1NjaaZlZfXx8Sua6A2ZRYci+dHQ6HJEW3D/M2oKckAaaZ3blzJ2SCkUZdXV3QOC6XS/Kz/+FtQL3k3rgww927d0Mi1xW4efOmaXhUVJSxceND3tuAOin4MvfatWshE4w0zp8/bxrupam6fZi3ATclKTU11TSzEydOhESuK/DDDz+YhntpMjXg35I0fPhw08yOHDnisz/YnXA4HPr6669N46Snpxuvt9qHeRtQJUkTJ040zaypqUl79uwJiWQksX///qCd4KRJk4zX4wEjEcJiKDMzk+bmZlwuV3etgQD3JurUqVOD8i0vLzeSjDczIBrPcjjQUbf3s27duu7S3Yrt27cH5RkXF4fD4QCwA/62ANuYsA/g9ddfD5qx1Wrl22+/7TbxFRUV9OnTJyjPF1980Uiy31S8x4Bl4H+N3bdvX5/fBgwYwMmTJwG6tDn8+OOPJCcnBxUviS+//NJItrgjBsTiPldj8uTJSGLUqFFcuHABgFu3brFly5Y2TcRms7F9+/YuE//JJ58QExPTIfFDhgwxDkhuAz7T4EAmbAQoKSlBEm+88YYPicbGRpYuXdqmsOzsbL755puICS8rK+PZZ5/tkHDjeffdd43k6zok3mPAKKClpaWF0aNHk5yczI0bN3wIuVwunnvuOZ9CR44cSXFxMeXl5Tx48KDTghsaGigrK6OoqIhRo0aFJFwSiYmJ3L9/H9xH+wEPRgKZsB3cp8KSGDx4MEeOHPEhefv2bQYNGhSQRF5eXqtZoWL27Nkhi/Z+Nm7caGT1z5DEewwYgmdInDt3LpL7/o/XeNqK0tJSv/cCEhMTqampCVm4AbNrMcGeadOmGW2/ERgWsgEeE/4IcPPmTfr3799aE/xV6/LyckaMGNGGRHFxcafFG5g5c2bI4m02G2fPnjWy+HOnxHsMiAIqAA4ePEiPHj2QAk+AnE4nx44dY+fOnezateuR/n0DH3zwQcgGbN261UheQQcuSAQzYThQA/D2228jieTk5JDu/j0KQm0GhYWFRtJ6wGcDtLMm/ArPJSnjIuOGDRu6xICampoOi1+0aJHR7p3AvLCI9zJhObir+YoVK+jXrx+nTp0y4x42dET84sWLaWpqMoaajh2Fd8KEPxmk3nrrLZKSkrpkLRBM/PLly41/Hh6l0+ugCcuBFoB9+/YxYMAAcnNzqaysjNhaIJBwm83Gjh07jGhO4A8RFe9lwlzcS0uuXbvWeokqNjaW7OxsZs2axaRJk6ivr4+YAdnZ2VRVVRlRagHzo+8ImJCOZ4gE2L17NxkZGW1I2u32sBuQkpLCli1bvI/mKwlXb98JE6y4J0sNAM3NzWzbto3x48cTFRVlbEI8MmJiYsjIyGD9+vXek7BG3Je3u+eDiXZGpAI7cH/OAsDp06fDIh7ccwGvf9wBbAAGdbduH+C+V/x3PHeLDXSmc/STphb3t0JDu1tnUAAxwO+Ag3iaRyfRCOzBfVv9f/+zOX/wEJ8qaYqkcXJ/OJkiKd7zIPeHk3ZJ/5F0VtJpSZWSzlksloeR5PcYj/EYj/FfYfJIv2NGzMoAAAAASUVORK5CYII="></a>
+            </form>
+
         </div>
-        </form>
+
     </div>
 </div>
 </div>

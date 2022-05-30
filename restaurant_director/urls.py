@@ -1,4 +1,4 @@
-"""restaurant_director_02 URL Configuration
+"""restaurant_director URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.0/topics/http/urls/
@@ -22,8 +22,11 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('restaurant_project.urls')),
-    path('api/', include('api_project.urls'))
-] 
+    path('', include('social_django.urls', namespace = 'social')),
+
+    path('api/', include('api_project.urls')),
+    path('api/auth', include('rest_framework.urls')),
+]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

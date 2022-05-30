@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Поиск блюдо
+{% endblock %}
+
+{% block content %}
+<br>
+<br>
+<div class="container dish_con">
+    <div class="row">
+        <br>
+        <br>
+        <h3 class="fw-bold text text-center">Поиск блюдо {{ filter.title }}</h3>
+        <div class="col col-lg-6">
+            <form class="text" method="get">
+                {{ filter.form.as_p }}
+                <button class="btn btn-outline-success">Отправить</button>
+                <br>
+                <br>
+            </form>
+        </div>
+        <div class="col col-lg-6 col-md-12 col-sm-12">
+            <div class="text">
+                {% for filter_item in filter.qs %}
+                <div class="">
+                    <div class="card card_food">
+                        <div class="card-body">
+                            <p class="fw-bold">
+                                <img class='photo_food' src="{{ filter_item.photo }}" width='250' height='250' alt="">
+                                <br>
+                            <h4 class="fw-bold text"><a class='a_food' href="{{ item.get_absolute_url }}">
+                                {{ filter_item.name }}</a>
+                            </h4> <span class="content_food text">{{ filter_item.content|truncatewords:30 }}</span></p>
+                            <h4 class="fw-bold price_food">{{ filter_item.price }} рублей</h4>
+                        </div>
+                        <div class="card-footer">
+                            <h5 class="fw-bold text">Категория: <span class='category_food'>{{ filter_item.category }}</span>
+                            </h5>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

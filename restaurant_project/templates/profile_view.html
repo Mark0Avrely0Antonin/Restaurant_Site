@@ -18,8 +18,8 @@
             <h4 class="text"><span class="fw-bold">Профильное имя:</span> {{ profile_item.profile_username }}</h4>
             <br>
             <br>
-            <h5 class="text"><span class="fw-bold italic"> Зарегистрирован:</span> <span style="color: green">{{ profile_item.account.time_create }}</span></h5>
-            <h5 class="text"><span class="fw-bold"> Обновился:</span> <span style="color: orange;">{{ profile_item.account.time_update }}</span></h5>
+            <h5 class="text"><span class="fw-bold italic"> Зарегистрирован:</span> <span style="color: green">{{ created }}</span></h5>
+            <h5 class="text"><span class="fw-bold"> Обновился:</span> <span style="color: orange;">{{ last_login }}</span></h5>
             {% if profile_item.country %}
             <h5 class="text"><span class="fw-bold">Страна пользователя: </span>{{ profile_item.country }}</h5>
             {% else %}

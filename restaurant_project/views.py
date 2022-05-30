@@ -6,16 +6,22 @@ from django.template.loader import render_to_string
 from django.views.generic import *
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
+from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth import login
 from django.contrib.auth import views as auth_views
 from django.core.mail import EmailMessage
-from django.conf import settings
-
+from datetime import timedelta
 
 from .forms import *
 from .models import *
 from .utils import generate_token
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+def menu_filter(request):
+    filter = Menu_Filter(request.GET, queryset = Menu.objects.all())
+    return render(request, 'menu_filter.html', {"filter": filter})
 
 
 def send_action_email(user, request):
@@ -47,8 +53,8 @@ def activate_user(request, uidb64, token):
         user.is_email_verified = True
         user.save()
 
-        messages.add_message(request, messages.SUCCESS, f'Почта подтвердила ваш почту {user.username}! Авторизуйтесь')
-        return redirect(reverse("login"))
+        messages.add_message(request, messages.SUCCESS, f'Ваша почта подтверждена, авторизуйтесь {user.username}!')
+        return redirect(reverse("main"))
     return render(request, 'activate-failed.html', {"user": user})
 
 
@@ -97,7 +103,7 @@ class Contacts(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(Contacts, self).get_context_data()
 
-        context['comments'] = ContactReview.objects.all()
+        context['comments'] = ContactReview.objects.all().order_by('-time_created')
 
         return context
 
@@ -137,6 +143,19 @@ class ProfileView(DetailView):
     template_name = 'profile_view.html'
     context_object_name = 'profile_item'
     slug_field = 'profile_username'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data()
+
+        user_last_login = User_Account.objects.get(profile_username = self.kwargs['slug']).last_login
+        user_created = User_Account.objects.get(profile_username = self.kwargs['slug']).time_create
+        last_login = user_last_login + timedelta(hours = 3)
+        created = user_created + timedelta(hours = 3)
+
+        context['last_login'] = last_login
+        context['created'] = created
+
+        return context
 
 
 class LogoutView(auth_views.LogoutView):

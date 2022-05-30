@@ -3,6 +3,25 @@ from django.contrib.auth.models import User
 from django import forms
 from .models import *
 
+import django_filters
+
+
+class Menu_Filter(django_filters.FilterSet):
+    name = django_filters.CharFilter(lookup_expr = 'icontains', widget = forms.TextInput(
+        attrs = {'class': 'form-control', 'style': 'width: 400px;'}))
+    price = django_filters.NumberFilter(
+        widget = forms.NumberInput(attrs = {'class': 'form-control', 'style': 'width: 350px;'}))
+    price__gt = django_filters.NumberFilter(field_name = 'price', lookup_expr = 'gt', widget = forms.NumberInput(
+        attrs = {'class': 'form-control', 'style': 'width: 300px;'}))
+    price__lt = django_filters.NumberFilter(field_name = 'price', lookup_expr = 'lt', widget = forms.NumberInput(
+        attrs = {'class': 'form-control', 'style': 'width: 300px;'}))
+
+
+
+
+    class Meta:
+        product = Menu
+
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -36,6 +55,8 @@ class RegisterForm(UserCreationForm):
         attrs = {'class': 'form-control', 'style': 'width:300px;'}))
 
 
+
+
     class Meta:
         model = User_Account
         fields = ('username', 'email', 'password1', 'password2')
@@ -51,5 +72,3 @@ class ContactsForm(forms.ModelForm):
     class Meta:
         model = ContactReview
         fields = ('comment',)
-
-
