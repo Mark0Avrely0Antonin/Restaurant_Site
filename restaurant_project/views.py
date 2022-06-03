@@ -1,5 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
+from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404
 from django.template.loader import render_to_string
@@ -12,11 +14,17 @@ from django.contrib.auth import views as auth_views
 from django.core.mail import EmailMessage
 from datetime import timedelta
 
+from social_django.models import UserSocialAuth
+
 from .forms import *
 from .models import *
 from .utils import generate_token
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+class PNF(TemplateView):
+    template_name = '404.html'
 
 
 def menu_filter(request):
@@ -54,7 +62,7 @@ def activate_user(request, uidb64, token):
         user.save()
 
         messages.add_message(request, messages.SUCCESS, f'Ваша почта подтверждена, авторизуйтесь {user.username}!')
-        return redirect(reverse("main"))
+        return redirect(reverse("login"))
     return render(request, 'activate-failed.html', {"user": user})
 
 
@@ -78,20 +86,49 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
-def user_login(request):
-    if request.method == 'POST':
-        form = LoginForm(data = request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            if not user.is_email_verified:
-                messages.error(request,
-                               f'Электронная почта не подтверждена {user.username}, пожалуйста, проверьте свою почту')
-                return redirect("login")
-            login(request, user)
-            return redirect("main")
-    else:
-        form = LoginForm()
-    return render(request, "login.html", {"form": form})
+#
+# def user_login(request):
+#     if request.method == 'POST':
+#         form = LoginForm(data = request.POST)
+#         if form.is_valid():
+#             user = form.get_user()
+#             if not user.is_email_verified:
+#                 messages.error(request,
+#                                f'Электронная почта не подтверждена {user.username}, пожалуйста, проверьте свою почту')
+#                 return redirect("login")
+#             login(request, user)
+#             return redirect("main")
+#     else:
+#         form = LoginForm()
+#     return render(request, "login.html", {"form": form})
+
+
+class Login(LoginView):
+    redirect_authenticated_user = True
+    next_page = 'main'
+    template_name = 'login.html'
+    authentication_form = LoginForm
+
+    def form_valid(self, form):
+        user = form.get_user()
+        # user.is_email_verified = UserSocialAuth.objects.filter(user = user).exists()
+        social_users = UserSocialAuth.objects.all()
+        for index in range(0, len(social_users)):
+            social_list_users = social_users[index].user_id
+            if user.id == social_list_users:
+                social_user = UserSocialAuth.objects.get(user_id=user.id)
+                if social_user:
+                    user.is_email_verified = True
+        if not user.is_email_verified:
+            messages.error(self.request,
+                           f'Электронная почта не подтверждена {user.username}, пожалуйста, проверьте свою почту')
+            return redirect("login")
+        return super().form_valid(form)
+
+
+class LogoutView(auth_views.LogoutView):
+    next_page = 'login'
+    redirect_field_name = 'login'
 
 
 ## PROFILE ###
@@ -138,17 +175,18 @@ def edit_profile(request, slug):
     return render(request, 'edit_profile.html', {'form': form})
 
 
-class ProfileView(DetailView):
+class ProfileView(LoginRequiredMixin, DetailView):
     model = Profile
     template_name = 'profile_view.html'
     context_object_name = 'profile_item'
     slug_field = 'profile_username'
+    login_url = 'login'
 
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data()
 
-        user_last_login = User_Account.objects.get(profile_username = self.kwargs['slug']).last_login
-        user_created = User_Account.objects.get(profile_username = self.kwargs['slug']).time_create
+        user_last_login = self.request.user.last_login
+        user_created = self.request.user.time_create
         last_login = user_last_login + timedelta(hours = 3)
         created = user_created + timedelta(hours = 3)
 
@@ -158,13 +196,6 @@ class ProfileView(DetailView):
         return context
 
 
-class LogoutView(auth_views.LogoutView):
-    next_page = 'main'
-    redirect_field_name = 'main'
-
-
-## PROFILE ### 
-### MENU ###
 
 class MenuView(ListView):
     model = Menu
@@ -187,7 +218,10 @@ class AddReview(View):
         review_total_unlikes = review_item.review_total_unlikes()
 
         context['review_total_likes'] = review_total_likes
+        context['review_created_at'] = review_item.created_at + timedelta(hours = 3)
         context['review_total_unlikes'] = review_total_unlikes
+
+        return context
 
     def post(self, request, pk):
         dish = Menu.objects.get(pk = pk)
@@ -241,14 +275,14 @@ def get_category_menu(request, category_id):
     return render(request, template_name = 'category_menu.html', context = context)
 
 
-class View_Menu(DetailView):
+class ViewMenu(DetailView):
     model = Menu
     template_name = 'view_dish.html'
     context_object_name = 'dish_item'
     slug_field = 'url'
 
     def get_context_data(self, **kwargs):
-        context = super(View_Menu, self).get_context_data()
+        context = super(ViewMenu, self).get_context_data()
 
         dish_item = get_object_or_404(Menu, url = self.kwargs['slug'])
 
@@ -273,16 +307,10 @@ def dish_likes(request, slug):
     return HttpResponseRedirect(reverse('view_dish', args = [str(slug)]))
 
 
-class About_Us(TemplateView):
+class AboutUs(TemplateView):
     template_name = 'about_us.html'
 
 
-### MENU ####
-
-## REGISTER, LOGIN, LOGOUT
-
-## CONTACTS ###
-
-class Change_Password(auth_views.PasswordChangeView):
+class ChangePassword(auth_views.PasswordChangeView):
     template_name = 'change_password.html'
     success_url = 'main'
