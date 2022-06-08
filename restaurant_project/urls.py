@@ -15,7 +15,7 @@ urlpatterns = [
   path('about_us/', AboutUs.as_view(), name='about_us'),
 
   path('register/', register, name='register'),
-  path('login/', LoginView.as_view(), name='login'),
+  path('login/', Login.as_view(), name='login'),
   path('logout/', LogoutView.as_view(), name='logout'),
 
   path('profile_view/<slug:slug>/', ProfileView.as_view(), name='profile_view'),
