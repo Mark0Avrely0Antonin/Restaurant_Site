@@ -9,13 +9,13 @@ urlpatterns = [
   path('main/', MenuView.as_view(), name='main'),
   path('category_menu/<int:category_id>/', get_category_menu, name='get_category_menu'),
 
-  path('view_dish/<slug:slug>/', View_Menu.as_view(), name='view_dish'),
+  path('view_dish/<slug:slug>/', ViewMenu.as_view(), name='view_dish'),
   path('dish_likes/<slug:slug>/', dish_likes, name='dish_likes'),
 
-  path('about_us/', About_Us.as_view(), name='about_us'),
+  path('about_us/', AboutUs.as_view(), name='about_us'),
 
   path('register/', register, name='register'),
-  path('login/', user_login, name='login'),
+  path('login/', LoginView.as_view(), name='login'),
   path('logout/', LogoutView.as_view(), name='logout'),
 
   path('profile_view/<slug:slug>/', ProfileView.as_view(), name='profile_view'),
@@ -27,7 +27,7 @@ urlpatterns = [
   path('comment/', CommentAddReview.as_view(), name='comment_add'),
 
 
-  path('change_password/', Change_Password.as_view(), name='change_password'),
+  path('change_password/', ChangePassword.as_view(), name='change_password'),
 
 
   path('review/<int:pk>/', AddReview.as_view(), name='add_review'),
